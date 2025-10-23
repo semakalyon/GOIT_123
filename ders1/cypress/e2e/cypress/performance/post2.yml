@@ -1,0 +1,35 @@
+config:
+  target: "https://httpbin.org"
+  phases:
+    - duration: 2
+      arrivalRate: 1
+      name: "Goit Performance Testi"
+  payload:
+    path: "abc.csv"
+    fields:
+      - "keyword1"
+      - "keyword2"
+    order: sequence
+        
+
+scenarios:
+  - name: "Create Account"
+    flow:
+      - get:
+          url: "/get?param1={{ keyword1 }}"
+      - post:
+          url: "/post?param2={{ keyword2 }}"
+          json:
+            username: "goit"
+            password: "12345"
+          headers:
+            Content-type: "application/json"
+          capture:
+            - json: "$.json"
+              as: "response_body"
+            - json: "$.headers.Host"
+              as: "host"
+      - log: "Response Body: {{ response_body }}"
+      - log: "Host: {{ host }}"
+      - log: "İlk değer: {{ keyword1 }}"
+      - log: "İkinci değer: {{ keyword2 }}"

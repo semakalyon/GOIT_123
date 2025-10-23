@@ -1,0 +1,13 @@
+config:
+  target: "https://httpbin.org"
+  phases:
+    - duration: 1
+      arrivalRate: 2
+      name: "Goit Performance Testi" # opsiyonel
+
+scenarios:
+  - name: "Get a resource"
+    flow:
+      - get:
+          url: "{{ target }}/get"
+

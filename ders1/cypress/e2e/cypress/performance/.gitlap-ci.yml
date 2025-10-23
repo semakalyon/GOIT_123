@@ -1,0 +1,26 @@
+stages: #pipeline içinde hangi aşamalar (stage) olacağını tanımıyorsun.
+  - build
+  - test 
+
+build-job: #Bu bir job (iş) adı, istediğin gibi adlandırabilirsin.
+  stage: build # Bu job'un build aşamasında çalışacağını belirtiyorsun. Yani stagedeki ilk aşama
+  script: #Bu job da çalışacak komutlar
+    - echo "Hello, $GITLAB_USER_LOGIN"
+
+test: # Bu başka bir job adı. Test aşamasını yapacak.
+  image: cypress/base #Bu job un çalışacağı Docker imajını belirtir.
+  stage: test #Bu job test aşamasında çalışacak.
+  script:
+    - npm ci #Projedeki bağımlılıkları (package.json ve package-lock.json a göre) temiz ve hızlı şekilde yükler.
+    - npx cypress run #Cypress testlerini headless modda çalıştırır.
+  artifacts: #Bu job tamamlandığında ortaya çıkan dosyaları saklamanı sağlar.
+    when: always #Artifacts, job başarılı veya başarısız olsun her durumda saklanacak.
+    paths:
+      - cypress/videos/**/*.mp4
+      - cypress/screenshots/**/*.png
+
+    expire_in: 1 day #saklanan artifacts 1 gün sonra GitLab sunucusundan otomatik olarak silinir.
+
+    #paths:
+     # - cypress/videos/
+     # - cypress/screenshots/        

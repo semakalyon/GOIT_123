@@ -1,0 +1,37 @@
+config:
+  target: "https://dogapi.dog/api/v2"
+  phases:
+    - duration: 5
+      arrivalRate: 3
+      name: "Dog API GET Test"
+  plugins:
+    ensure:
+      thresholds:
+        - http.response_time.max: 1500
+        - http.response_time.2xx.p95: 2500
+      conditions:
+        - expression: http.responses > 0
+        - expression: vusers.completed > 0
+        - expression: http.response_time.max < 1000
+  reporter:
+    - name: "json"
+      output: "dogapi-report.json"      
+
+scenarios:
+  - name: "GET Dog Facts"
+    flow:
+      - get:
+          url: "/facts?limit=3"
+          headers:
+            Content-Type: "application/json; charset=utf-8"
+          capture:
+            - json: "$.data"
+              as: "response_body"
+            - json: "$.data[0].attributes.body"
+              as: "first_fact"
+      - log: "GET request completed for /facts"
+      - log: "Response Body: {{ response_body }}"
+      - log: "First Dog Fact: {{ first_fact }}"
+
+
+
