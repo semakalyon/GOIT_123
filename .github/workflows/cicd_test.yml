@@ -37,11 +37,11 @@ jobs:
           
       - name: Install dependencies
         run: npm install 
-        working-directory: ./ders1
+        working-directory: ./ders1/cypress/pages
         
       - name: Run Cypress Tests
         run: npx cypress run 
-        working-directory: ./ders1
+        working-directory: ./ders1/cypress/pages
         
       - name: Upload Cypress videos
         if: always() 
