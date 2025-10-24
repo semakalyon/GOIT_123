@@ -23,6 +23,8 @@ jobs:
   test: 
     runs-on: ubuntu-latest
     name: Cypress Test Job
+    needs: build
+    timeout-minutes: 15
     container:
       image: cypress/base:latest
 
