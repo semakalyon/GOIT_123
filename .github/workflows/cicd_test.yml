@@ -2,8 +2,8 @@ name: CI-CD pipeline # isim vermek için kullanılır
 
 on: 
   workflow_dispatch: # manuel çalıştırma
-  schedule:
-    - cron: "0 8 * * *" # her sabah 8'de çalışır 
+  #schedule:
+  #  - cron: "0 8 * * *" # her sabah 8'de çalışır 
   push: 
     branches:
       - main
